@@ -4,7 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="" />
+    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/danielml/logger/Recording.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/xlsxrecording.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/data/xlsxrecording.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/danielml/logger/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/danielml/logger/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/danielml/logger/javafx/ChartDataConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/danielml/logger/javafx/ChartDataConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/danielml/logger/javafx/HoverEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/danielml/logger/javafx/HoverEventListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/danielml/logger/sheets/CSVConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/danielml/logger/sheets/CSVConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/danielml/logger/sheets/SheetsReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/danielml/logger/sheets/SheetsReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/danielml/logger/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/danielml/logger/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/danielml/logger/javafx/ChartDataConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/danielml/logger/javafx/ChartDataConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/danielml/logger/javafx/HoverEventListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/danielml/logger/javafx/HoverEventListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/danielml/logger/sheets/CSVConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/danielml/logger/sheets/CSVConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/me/danielml/logger/sheets/SheetsReader.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/me/danielml/logger/sheets/SheetsReader.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -66,6 +80,9 @@
       <setting name="OPEN_NEW_TAB" value="false" />
     </FindUsagesManager>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
@@ -83,6 +100,7 @@
     <option name="height" value="876" />
   </component>
   <component name="ProjectId" id="1z8cDDu6bz1mOM5jrNCyTekF8fE" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectReloadState">
     <option name="STATE" value="0" />
   </component>
@@ -190,6 +208,20 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="me.danielml.logger.javafx.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="me.danielml.logger.Main" />
+      <module name="PrimoLogger" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="me.danielml.logger.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -344,6 +376,18 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />

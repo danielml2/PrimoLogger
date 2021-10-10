@@ -1,15 +1,14 @@
 package me.danielml.logger.javafx;
 
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.SortedMap;
 
 public class ChartDataConverter {
 
-    public XYChart.Series<Number, Number> convert(SortedMap<Double, Double> data, String categoryName) {
+    public XYChart.Series<Number, Number> convert(Map<Double, Double> data, String categoryName) {
 
         NumberAxis xAxis = new NumberAxis();
         xAxis.setLabel("Time (in seconds)");

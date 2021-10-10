@@ -7,20 +7,18 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
 
 public class SheetsReader {
 
-
-    private final HashMap<String, GraphCategory> graphCategories;
+    private HashMap<String, GraphCategory> graphCategories;
     private Sheet recordingSheet;
 
-    public SheetsReader(String fileName) throws IOException {
+    public SheetsReader(String fileName) {
         graphCategories = new HashMap<>();
        try {
-           readFile(fileName);
+           readFile(fileName + ".xlsx");
        } catch (IOException exception) {
            exception.printStackTrace();
        }
@@ -34,7 +32,6 @@ public class SheetsReader {
         Workbook workbook = new XSSFWorkbook(stream);
         recordingSheet = workbook.getSheet("recording");
 
-
         for(Cell cell : recordingSheet.getRow(0)) {
             if(cell.getCellType() == CellType.STRING)
             {
@@ -43,14 +40,10 @@ public class SheetsReader {
 
                 if(value.contains("Shuffleboard") || value.contains("limelight"))
                 {
-
                     if(!value.contains("network_table") || value.contains("CameraPublisher")) continue;
                     value = value.split("network_table:///")[1];
-
                     String categoryName = filterCategory(value);
                     String columnName = filterColumn(value);
-
-                    System.out.println(categoryName + ": " + columnName);
 
                     GraphCategory category = graphCategories.containsKey(categoryName) ? graphCategories.get(categoryName) : new GraphCategory(categoryName);
                     category.addSubColumn(new GraphableColumn(columnName,cell.getColumnIndex()));
@@ -59,18 +52,15 @@ public class SheetsReader {
             }
         }
 
-        System.out.println(recordingSheet.getRow(0).getCell(0).getRichStringCellValue());
-
     }
 
-    public SortedMap<Double,Double> getDataFromSheet(String categoryName, String columnName) {
+    public HashMap<Double,Double> getDataFromSheet(String categoryName, String columnName) {
         GraphCategory category = graphCategories.get(categoryName);
         if(category == null) return null;
         GraphableColumn column = category.getColumnByName(columnName);
         if(column == null) return null;
 
-        SortedMap<Double,Double> data = new TreeMap<>();
-
+        HashMap<Double,Double> data = new HashMap<>();
 
         for(Row row : recordingSheet) {
             if(row.getCell(0).getRowIndex() == 0)

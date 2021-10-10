@@ -7,8 +7,9 @@ import com.aspose.cells.Workbook;
 
 public class CSVConverter {
 
-    LoadOptions options = new LoadOptions(FileFormatType.CSV);
-    public void convertTOXLSX(String fileName, String newFileName) throws Exception {
+
+    public static void convertTOXLSX(String fileName, String newFileName) throws Exception {
+        LoadOptions options = new LoadOptions(FileFormatType.CSV);
         Workbook workbook = new Workbook("data/" + fileName + ".csv",options);
 
         workbook.save("data/" + newFileName + ".xlsx", SaveFormat.XLSX);

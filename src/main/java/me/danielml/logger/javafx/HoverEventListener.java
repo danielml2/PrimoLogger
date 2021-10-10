@@ -29,7 +29,9 @@ public class HoverEventListener implements EventHandler<MouseEvent> {
 
         StringBuilder finalText = new StringBuilder();
 
-        for (Map<Double, Double> data : main.getCurrentData()) {
+        for (String s : main.getSelectedCategories()) {
+
+            Map<Double, Double> data = main.getRecording().getLoadedDataBy(s);
 
             Point2D nearestPoint = new Point2D(0, 0);
             Point2D secondNearest = new Point2D(999, 999);
@@ -38,7 +40,7 @@ public class HoverEventListener implements EventHandler<MouseEvent> {
                 if (distance < MathUtil.axisDistance(nearestPoint.getX(), mouseX)) {
                     secondNearest = nearestPoint;
                     nearestPoint = new Point2D(entry.getKey(), entry.getValue());
-                } else if (distance < MathUtil.axisDistance(secondNearest.getX(), mouseX) && MathUtil.axisDistance(nearestPoint.getX(), mouseX) > distance) {
+                } else if (distance < MathUtil.axisDistance(secondNearest.getX(), mouseX)) {
                     secondNearest = new Point2D(entry.getKey(), entry.getValue());
                 }
             }
