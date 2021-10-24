@@ -22,6 +22,7 @@ import me.danielml.logger.graph.GraphableColumn;
 import java.net.URL;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class GUIController implements Initializable {
 
@@ -63,7 +64,9 @@ public class GUIController implements Initializable {
 
         mainChart.getData().add(chartConverter.convert(data,category + " " + column));
     }
-    // TODO: Make a remove function from the chart, so you can tick off values and they would dissapear from it
+    public void removeChartData(String category, String column) {
+        mainChart.getData().removeIf((Predicate<XYChart.Series>) series -> series.getName().equals(category + " " + column));
+    }
 
     public LineChart getMainChart() {
         return mainChart;

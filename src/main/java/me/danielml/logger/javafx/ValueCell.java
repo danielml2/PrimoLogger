@@ -16,24 +16,26 @@ public class ValueCell extends ListCell<String> {
 
     private HBox box;
     private Label name;
-    private Button button;
+    private CheckBox checkBox;
     private Pane space;
     private String value;
-    private boolean on = false;
 
     public ValueCell(GUIController controller, String category) {
         box = new HBox();
         box.setAlignment(Pos.CENTER);
+        space = new Pane();
         HBox.setHgrow(space, Priority.ALWAYS);
+        name = new Label();
         name.setText("empty");
-        CheckBox ch = new CheckBox();
 
-        button.setOnAction(event -> {
-            if(!on)
+        checkBox = new CheckBox();
+        checkBox.setOnAction(event -> {
+            if(checkBox.isSelected())
                 controller.addChartData(category,value);
-
+            else
+                controller.removeChartData(category,value);
         });
-        button.setText("");
+        box.getChildren().addAll(name,space,checkBox);
     }
 
     @Override
