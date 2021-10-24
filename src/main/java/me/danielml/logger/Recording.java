@@ -1,10 +1,11 @@
 package me.danielml.logger;
 
+import me.danielml.logger.graph.GraphableColumn;
 import me.danielml.logger.sheets.CSVConverter;
 import me.danielml.logger.sheets.SheetsReader;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Consumer;
 
 public class Recording {
 
@@ -39,6 +40,17 @@ public class Recording {
 
     public Map<Double,Double> getLoadedDataBy(String category, String column) {
         return loadedData.get(category+"_"+column);
+    }
+
+    public List<String> getGraphableColumns(String category) {
+        List<String> nameList = new ArrayList<>();
+        reader.getGraphCategories().get(category).getSubColumns().forEach(graphableColumn -> nameList.add(graphableColumn.getColumnName()));
+        return nameList;
+    }
+
+    public List<String> getCategories() {
+        List<String> nameList = new ArrayList<>();
+        return new ArrayList<>(reader.getGraphCategories().keySet());
     }
 
 }

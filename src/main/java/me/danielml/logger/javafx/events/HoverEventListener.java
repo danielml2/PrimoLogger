@@ -1,4 +1,4 @@
-package me.danielml.logger.javafx;
+package me.danielml.logger.javafx.events;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
@@ -17,7 +17,7 @@ public class HoverEventListener implements EventHandler<MouseEvent> {
     private Axis<Number> numberAxis;
     public HoverEventListener(Main main, Label text) {
         this.main = main;
-        this.numberAxis = main.getChart().getXAxis();
+        this.numberAxis = main.getMainChart().getXAxis();
         this.text = text;
     }
 

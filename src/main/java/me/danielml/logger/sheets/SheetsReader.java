@@ -93,5 +93,7 @@ public class SheetsReader {
             return tableValue.split("/")[1];
     }
 
-
+    public HashMap<String, GraphCategory> getGraphCategories() {
+        return graphCategories;
+    }
 }
