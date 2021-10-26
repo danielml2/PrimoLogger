@@ -1,16 +1,12 @@
 package me.danielml.logger.javafx;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import me.danielml.logger.Recording;
 
 public class ValueCell extends ListCell<String> {
 
@@ -18,9 +14,12 @@ public class ValueCell extends ListCell<String> {
     private Label name;
     private CheckBox checkBox;
     private Pane space;
-    private String value;
+    private String category,value;
+    private GUIController controller;
 
     public ValueCell(GUIController controller, String category) {
+        this.controller = controller;
+        this.category = category;
         box = new HBox();
         box.setAlignment(Pos.CENTER);
         space = new Pane();
@@ -47,6 +46,9 @@ public class ValueCell extends ListCell<String> {
             setGraphic(box);
             name.setText(item);
             this.value = item;
+            checkBox.setSelected(controller.isSelected(category,value));
+            if(checkBox.isSelected())
+                controller.addChartData(category,value);
         }
     }
 }

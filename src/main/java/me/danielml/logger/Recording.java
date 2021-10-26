@@ -4,6 +4,7 @@ import me.danielml.logger.graph.GraphableColumn;
 import me.danielml.logger.sheets.CSVConverter;
 import me.danielml.logger.sheets.SheetsReader;
 
+import java.io.File;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -12,11 +13,11 @@ public class Recording {
     private SheetsReader reader;
     private HashMap<String,Map<Double,Double>> loadedData;
 
-    public Recording(String fileName) {
+    public Recording(File file) {
         loadedData = new HashMap<>();
         try {
-            CSVConverter.convertTOXLSX(fileName,fileName);
-            reader = new SheetsReader(fileName);
+            CSVConverter.convertTOXLSX(file);
+            reader = new SheetsReader(file.getName().substring(0,file.getName().length()-4));
             System.out.println("Loaded file");
         } catch (Exception e) {
             e.printStackTrace();

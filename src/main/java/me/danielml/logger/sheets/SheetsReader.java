@@ -26,11 +26,13 @@ public class SheetsReader {
 
     public void readFile(String fileName) throws IOException {
         File file = new File("data/" + fileName);
+        System.out.println(file.getPath());
         if(!file.exists()) return;
 
         FileInputStream stream = new FileInputStream(file);
         Workbook workbook = new XSSFWorkbook(stream);
-        recordingSheet = workbook.getSheet("recording");
+        System.out.println(workbook.getNumberOfSheets());
+        recordingSheet = workbook.getSheetAt(0);
 
         for(Cell cell : recordingSheet.getRow(0)) {
             if(cell.getCellType() == CellType.STRING)
@@ -62,6 +64,7 @@ public class SheetsReader {
 
         HashMap<Double,Double> data = new HashMap<>();
 
+        // TODO: Optimize point reading from recordingSheet for long files so JavaFx doesn't shit itself apparently
         for(Row row : recordingSheet) {
             if(row.getCell(0).getRowIndex() == 0)
                 continue;
