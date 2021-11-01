@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
@@ -19,6 +20,7 @@ import javafx.util.Callback;
 import me.danielml.logger.Recording;
 import me.danielml.logger.graph.ChartDataConverter;
 import me.danielml.logger.graph.GraphableColumn;
+import me.danielml.logger.javafx.events.HoverEventListener;
 
 
 import java.io.File;
@@ -31,12 +33,11 @@ public class GUIController implements Initializable {
 
     public GUIController() {}
 
-    @FXML
-    private MenuItem fileChooser;
-    @FXML
-    private LineChart mainChart;
-    @FXML
-    private ListView categoryList,valuesList;
+    @FXML private MenuItem fileChooser;
+    @FXML private LineChart mainChart;
+    @FXML private ListView categoryList,valuesList;
+    @FXML private Label hoverText;
+
     private Recording selectedRecording;
     private List<String> selectedColumns;
 
@@ -56,6 +57,9 @@ public class GUIController implements Initializable {
             if(file == null) return;
             loadRecording(new Recording(new File(file.getPath())));
         });
+        Node node = mainChart.lookup(".chart-plot-background");
+        mainChart.setOnMouseMoved(new HoverEventListener(this,hoverText));
+        node.setOnMouseMoved(new HoverEventListener(this,hoverText));
     }
 
     public void loadRecording(Recording recording) {
@@ -103,5 +107,11 @@ public class GUIController implements Initializable {
         return mainChart;
     }
 
+    public List<String> getSelectedColumns() {
+        return selectedColumns;
+    }
 
+    public Map<Double,Double> getLoadedDataByRecording(String column) {
+        return selectedRecording.getLoadedDataBy(column);
+    }
 }

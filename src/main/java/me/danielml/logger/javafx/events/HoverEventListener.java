@@ -2,39 +2,43 @@ package me.danielml.logger.javafx.events;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.chart.Axis;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.PopupWindow;
 import me.danielml.logger.Main;
+import me.danielml.logger.javafx.GUIController;
 import me.danielml.logger.util.MathUtil;
 
 import java.util.Map;
 
 public class HoverEventListener implements EventHandler<MouseEvent> {
 
-    private final Main main;
-    private Label text;
-    private Axis<Number> numberAxis;
-    public HoverEventListener(Main main, Label text) {
-        this.main = main;
-        this.numberAxis = main.getMainChart().getXAxis();
-        this.text = text;
+    private Label hoverText;
+    private GUIController controller;
+    public HoverEventListener(GUIController controller, Label hoverText) {
+        this.controller = controller;
+        this.hoverText = hoverText;
     }
 
     @Override
     public void handle(MouseEvent event) {
+        if(controller.getSelectedColumns() == null || controller.getSelectedColumns().isEmpty()) return;
         Point2D mousePos = new Point2D(event.getSceneX(), event.getSceneY());
-        Axis<Number> xAxis = numberAxis;
+        Axis<Number> xAxis = controller.getMainChart().getXAxis();
         double mouseX = xAxis.getValueForDisplay(xAxis.sceneToLocal(mousePos).getX()).doubleValue();
 
         StringBuilder finalText = new StringBuilder();
+        finalText.append("Time: " + mouseX + "s \n");
+        for (String s : controller.getSelectedColumns()) {
 
-        for (String s : main.getSelectedCategories()) {
-
-            Map<Double, Double> data = main.getRecording().getLoadedDataBy(s);
+            Map<Double, Double> data = controller.getLoadedDataByRecording(s);
+            if(data == null) return;
 
             Point2D nearestPoint = new Point2D(0, 0);
-            Point2D secondNearest = new Point2D(999, 999);
+            Point2D secondNearest = new Point2D(0, 0);
             for (Map.Entry<Double, Double> entry : data.entrySet()) {
                 double distance = MathUtil.axisDistance(entry.getKey(), mouseX);
                 if (distance < MathUtil.axisDistance(nearestPoint.getX(), mouseX)) {
@@ -47,9 +51,8 @@ public class HoverEventListener implements EventHandler<MouseEvent> {
 
             double interpY = MathUtil.linearInterpolation(nearestPoint.getX(),nearestPoint.getY(),secondNearest.getX(),secondNearest.getY(),mouseX);
 
-            finalText.append("(").append(mouseX).append(",").append(interpY).append(") \n");
+            finalText.append(s + ": ").append(interpY).append(" \n");
         }
-        text.setText(finalText.toString());
-
+        hoverText.setText(finalText.toString());
     }
 }
