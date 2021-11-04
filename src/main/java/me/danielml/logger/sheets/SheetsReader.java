@@ -15,6 +15,10 @@ public class SheetsReader {
     private HashMap<String, GraphCategory> graphCategories;
     private Sheet recordingSheet;
 
+    /**
+     * Holds the data from XLSX file generated from the converter {@link CSVConverter}
+     * @param fileName XLSX file name (Converted files go in the data directory)
+     */
     public SheetsReader(String fileName) {
         graphCategories = new HashMap<>();
        try {
@@ -24,6 +28,11 @@ public class SheetsReader {
        }
     }
 
+    /**
+     * Reads the file and saves it into the hashmaps
+     * @param fileName XLSX file name
+     * @throws IOException If the file doesn't exist, or other IOExceptions
+     */
     public void readFile(String fileName) throws IOException {
         File file = new File("data/" + fileName);
         System.out.println(file.getPath());
@@ -44,8 +53,8 @@ public class SheetsReader {
                 {
                     if(!value.contains("network_table") || value.contains("CameraPublisher")) continue;
                     value = value.split("network_table:///")[1];
-                    String categoryName = filterCategory(value);
-                    String columnName = filterColumn(value);
+                    String categoryName = extractCategoryName(value);
+                    String columnName = extractColumnName(value);
 
                     GraphCategory category = graphCategories.containsKey(categoryName) ? graphCategories.get(categoryName) : new GraphCategory(categoryName);
                     category.addSubColumn(new GraphableColumn(columnName,cell.getColumnIndex()));
@@ -56,6 +65,12 @@ public class SheetsReader {
 
     }
 
+    /**
+     * Gets the data loaded in the map (The map basically holds all the data from the sheet file)
+     * @param categoryName Value's category/Shuffleboard tab name (e.g. Driver, Shooter, Limelight)
+     * @param columnName Value's name/Shuffleboard entry name (e.g. X position, setpoint, tx,ty)
+     * @return Data represented in a hashmap: (Timestamp, Value)
+     */
     public HashMap<Double,Double> getDataFromSheet(String categoryName, String columnName) {
         GraphCategory category = graphCategories.get(categoryName);
         if(category == null) return null;
@@ -82,14 +97,24 @@ public class SheetsReader {
         return data;
     }
 
-    public String filterCategory(String tableValue) {
-        if(tableValue.contains("Shuffleboard"))
-            return tableValue.split("Shuffleboard")[1].split("/")[1];
+    /**
+     * Extracts category/Shuffleboard tab name from the sheet cell value
+     * @param sheetValue Value from the sheet cell
+     * @return The name of category/NetworkTable it's of (Driver, Shooter, Limelight)
+     */
+    public String extractCategoryName(String sheetValue) {
+        if(sheetValue.contains("Shuffleboard"))
+            return sheetValue.split("Shuffleboard")[1].split("/")[1];
         else
-            return tableValue.split("/")[0];
+            return sheetValue.split("/")[0];
     }
 
-    public String filterColumn(String tableValue) {
+    /**
+     * Extracts out the Column/Value's name from the sheet cell value
+     * @param tableValue Value from the sheet cell
+     * @return The name of the value it represents (X position,setpoint,tx,ty)
+     */
+    public String extractColumnName(String tableValue) {
         if(tableValue.contains("Shuffleboard"))
             return tableValue.split("/")[2];
         else

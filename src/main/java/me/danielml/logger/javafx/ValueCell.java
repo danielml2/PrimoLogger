@@ -17,6 +17,11 @@ public class ValueCell extends ListCell<String> {
     private String category,value;
     private GUIController controller;
 
+    /**
+     * Represents each JavaFX cell in the ListView for the value list.
+     * @param controller - Main GUI's Controller
+     * @param category - The category the value's from
+     */
     public ValueCell(GUIController controller, String category) {
         this.controller = controller;
         this.category = category;
@@ -30,13 +35,18 @@ public class ValueCell extends ListCell<String> {
         checkBox = new CheckBox();
         checkBox.setOnAction(event -> {
             if(checkBox.isSelected())
-                controller.addChartData(category,value);
+                controller.addDataToChart(category,value);
             else
-                controller.removeChartData(category,value);
+                controller.removeDataFromChart(category,value);
         });
         box.getChildren().addAll(name,space,checkBox);
     }
 
+    /**
+     * Called when the ListView cell gets updated & when first added
+     * @param item - The string value of the list
+     * @param empty - If it's an empty cell or not
+     */
     @Override
     protected void updateItem(String item, boolean empty) {
         setText(null);
@@ -48,7 +58,7 @@ public class ValueCell extends ListCell<String> {
             this.value = item;
             checkBox.setSelected(controller.isSelected(category,value));
             if(checkBox.isSelected())
-                controller.addChartData(category,value);
+                controller.addDataToChart(category,value);
         }
     }
 }

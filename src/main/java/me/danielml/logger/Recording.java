@@ -13,6 +13,10 @@ public class Recording {
     private SheetsReader reader;
     private HashMap<String,Map<Double,Double>> loadedData;
 
+    /**
+     * Constructs recording from a Shuffleboard CSV Export file.
+     * @param file - Shuffleboard CSV export file
+     */
     public Recording(File file) {
         loadedData = new HashMap<>();
         try {
@@ -24,6 +28,12 @@ public class Recording {
         }
     }
 
+    /**
+     * Loads data from the Sheet file & Saves it onto the data map
+     * @param category Value's category/Shuffleboard tab name (e.g. Driver, Shooter, Limelight)
+     * @param column Value's category/Shuffleboard entry name (e.g. X position, setpoint, tx,ty)
+     * @return Map containing the data, in a format of (Timestamp, Value)
+     */
     public Map<Double, Double> loadData(String category, String column) {
         Map<Double,Double> map = reader.getDataFromSheet(category, column);
         if(map == null) System.out.println("Invalid category or column: " + category + " " + column);
@@ -35,6 +45,11 @@ public class Recording {
         return loadedData;
     }
 
+    /**
+     * Returns the loaded data by the recording, if it exists
+     * @param mapName -
+     * @return
+     */
     public Map<Double,Double> getLoadedDataBy(String mapName) {
         return getLoadedDataBy(mapName.split("_")[0],mapName.split("_")[1]);
     }

@@ -18,6 +18,12 @@ public class HoverEventListener implements EventHandler<MouseEvent> {
 
     private Label hoverText;
     private GUIController controller;
+
+    /**
+     * Constructs the listener for mouse hovering over the graph, to update the text under the chart accordingly
+     * @param controller Main GUI's controller
+     * @param hoverText Text to be updated
+     */
     public HoverEventListener(GUIController controller, Label hoverText) {
         this.controller = controller;
         this.hoverText = hoverText;
@@ -39,17 +45,18 @@ public class HoverEventListener implements EventHandler<MouseEvent> {
 
             Point2D nearestPoint = new Point2D(0, 0);
             Point2D secondNearest = new Point2D(0, 0);
+
             for (Map.Entry<Double, Double> entry : data.entrySet()) {
-                double distance = MathUtil.axisDistance(entry.getKey(), mouseX);
-                if (distance < MathUtil.axisDistance(nearestPoint.getX(), mouseX)) {
+                double distance = Math.abs(entry.getKey()-mouseX);
+                if (distance < Math.abs(nearestPoint.getX()-mouseX)) {
                     secondNearest = nearestPoint;
                     nearestPoint = new Point2D(entry.getKey(), entry.getValue());
-                } else if (distance < MathUtil.axisDistance(secondNearest.getX(), mouseX)) {
+                } else if (distance < Math.abs(secondNearest.getX()-mouseX)) {
                     secondNearest = new Point2D(entry.getKey(), entry.getValue());
                 }
             }
 
-            double interpY = MathUtil.linearInterpolation(nearestPoint.getX(),nearestPoint.getY(),secondNearest.getX(),secondNearest.getY(),mouseX);
+            double interpY = MathUtil.linearInterpolation(nearestPoint,secondNearest,mouseX);
 
             finalText.append(s + ": ").append(interpY).append(" \n");
         }

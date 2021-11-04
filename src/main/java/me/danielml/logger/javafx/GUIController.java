@@ -38,12 +38,15 @@ public class GUIController implements Initializable {
     @FXML private ListView categoryList,valuesList;
     @FXML private Label hoverText;
 
-    private Recording selectedRecording;
-    private List<String> selectedColumns;
+    private Recording selectedRecording; // Currently loaded recording
+    private List<String> selectedColumns; // Currently shown values/columns on the graph
 
+    // File directory for shuffleboard recordings
     private static final String RECORDINGS_PATH = System.getProperty("user.home") + File.separator + "Shuffleboard" + File.separator + "recordings";
 
-
+    /**
+     * JavaFX Controller's Init, gets called before the screen is shown
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         mainChart.setTitle("Values over time");
@@ -62,6 +65,12 @@ public class GUIController implements Initializable {
         node.setOnMouseMoved(new HoverEventListener(this,hoverText));
     }
 
+    /**
+     * Loads recording onto the GUI elements:
+     * updates the category listview to show all available shuffleboard tabs that can be put on a numeric graph
+     * adds the listener to the category listview to show the values that can be logged from the category selected
+     * @param recording recording to load onto the GUI
+     */
     public void loadRecording(Recording recording) {
         this.selectedRecording = recording;
         this.selectedColumns = new ArrayList<>();
@@ -85,7 +94,12 @@ public class GUIController implements Initializable {
 
     }
 
-    public void addChartData(String category,String column) {
+    /**
+     * Adds the specified value to the chart
+     * @param category Value's category (e.g. Driver, Shooter, limelight)
+     * @param column The value's name (e.g. X position,setpoint,ty,tx);
+     */
+    public void addDataToChart(String category, String column) {
         if(selectedColumns.contains(category+"_"+column))
             return;
         ChartDataConverter chartConverter = new ChartDataConverter();
@@ -94,11 +108,23 @@ public class GUIController implements Initializable {
 
         mainChart.getData().add(chartConverter.convert(data,category + " " + column));
     }
-    public void removeChartData(String category, String column) {
+
+    /**
+     * Removes the specified values from the chart
+     * @param category Value's category (e.g. Driver, Shooter, limelight)
+     * @param column The value's name (e.g. X position,setpoint,ty,tx);
+     */
+    public void removeDataFromChart(String category, String column) {
         selectedColumns.remove(category+"_"+column);
         mainChart.getData().removeIf((Predicate<XYChart.Series>) series -> series.getName().equals(category + " " + column));
     }
 
+    /**
+     * Returns if the given value is selected/being shown on the chart
+     * @param category Value's category (e.g. Driver, Shooter, limelight)
+     * @param column The value's name (e.g. X position,setpoint,ty,tx);
+     * @return If the value is selected or not
+     */
     public boolean isSelected(String category, String column) {
         return selectedColumns.contains(category+"_"+column);
     }
@@ -111,7 +137,12 @@ public class GUIController implements Initializable {
         return selectedColumns;
     }
 
-    public Map<Double,Double> getLoadedDataByRecording(String column) {
-        return selectedRecording.getLoadedDataBy(column);
+    /**
+     * Returns data from the recording if it already loaded it
+     * @param mapName The category and the value name combined, the way it's saved onto the hashmap
+     * @return Map containing the data loaded from the recording, (timestamp,value)
+     */
+    public Map<Double,Double> getLoadedDataByRecording(String mapName) {
+        return selectedRecording.getLoadedDataBy(mapName);
     }
 }
