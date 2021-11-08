@@ -2,13 +2,9 @@ package me.danielml.logger.javafx.events;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
 import javafx.scene.chart.Axis;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.PopupWindow;
-import me.danielml.logger.Main;
 import me.danielml.logger.javafx.GUIController;
 import me.danielml.logger.util.MathUtil;
 

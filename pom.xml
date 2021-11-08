@@ -25,7 +25,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>me.danielml.schooltests.TestMain</mainClass>
+                            <mainClass>me.danielml.logger.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -35,7 +35,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>me.danielml.schooltests.TestMain</mainClass>
+                            <mainClass>me.danielml.logger.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -71,6 +71,16 @@
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>13</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>13</version>
         </dependency>
     </dependencies>
 

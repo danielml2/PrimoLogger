@@ -20,6 +20,8 @@ public class CSVConverter {
         Workbook workbook = new Workbook(file.getPath(),options);
 
         String fileName = file.getName();
+        File dataDirectory = new File("data");
+        if(!dataDirectory.exists()) dataDirectory.mkdir();
         workbook.save("data/" + fileName.substring(0,fileName.length()-4) + ".xlsx", SaveFormat.XLSX);
     }
 }
