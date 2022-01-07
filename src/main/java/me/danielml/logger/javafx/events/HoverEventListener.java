@@ -27,28 +27,28 @@ public class HoverEventListener implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent event) {
-        if(controller.getSelectedColumns() == null || controller.getSelectedColumns().isEmpty()) return;
+        if(controller.getSelectedEntries() == null || controller.getSelectedEntries().isEmpty()) return;
         Point2D mousePos = new Point2D(event.getSceneX(), event.getSceneY());
         Axis<Number> xAxis = controller.getMainChart().getXAxis();
         double mouseX = xAxis.getValueForDisplay(xAxis.sceneToLocal(mousePos).getX()).doubleValue();
 
         StringBuilder finalText = new StringBuilder();
         finalText.append("Time: " + mouseX + "s \n");
-        for (String s : controller.getSelectedColumns()) {
+        for (String s : controller.getSelectedEntries()) {
 
-            Map<Double, Double> data = controller.getLoadedDataByRecording(s);
+            Map<Double, Number> data = controller.getLoadedDataByRecording(s);
             if(data == null) return;
 
             Point2D nearestPoint = new Point2D(0, 0);
             Point2D secondNearest = new Point2D(0, 0);
 
-            for (Map.Entry<Double, Double> entry : data.entrySet()) {
+            for (Map.Entry<Double, Number> entry : data.entrySet()) {
                 double distance = Math.abs(entry.getKey()-mouseX);
                 if (distance < Math.abs(nearestPoint.getX()-mouseX)) {
                     secondNearest = nearestPoint;
-                    nearestPoint = new Point2D(entry.getKey(), entry.getValue());
+                    nearestPoint = new Point2D(entry.getKey(), (double)entry.getValue());
                 } else if (distance < Math.abs(secondNearest.getX()-mouseX)) {
-                    secondNearest = new Point2D(entry.getKey(), entry.getValue());
+                    secondNearest = new Point2D(entry.getKey(), (double)entry.getValue());
                 }
             }
 

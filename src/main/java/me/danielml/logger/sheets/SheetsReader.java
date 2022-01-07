@@ -1,7 +1,7 @@
 package me.danielml.logger.sheets;
 
-import me.danielml.logger.graph.GraphCategory;
-import me.danielml.logger.graph.GraphableColumn;
+import me.danielml.logger.recordings.filerecording.FileLogTableData;
+import me.danielml.logger.recordings.filerecording.FileLogEntryData;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class SheetsReader {
 
-    private HashMap<String, GraphCategory> graphCategories;
+    private HashMap<String, FileLogTableData> loadableTables;
     private Sheet recordingSheet;
 
     /**
@@ -20,7 +20,7 @@ public class SheetsReader {
      * @param fileName XLSX file name (Converted files go in the data directory)
      */
     public SheetsReader(String fileName) {
-        graphCategories = new HashMap<>();
+        loadableTables = new HashMap<>();
        try {
            readFile(fileName + ".xlsx");
        } catch (IOException exception) {
@@ -53,12 +53,12 @@ public class SheetsReader {
                 {
                     if(!value.contains("network_table") || value.contains("CameraPublisher")) continue;
                     value = value.split("network_table:///")[1];
-                    String categoryName = extractCategoryName(value);
-                    String columnName = extractColumnName(value);
+                    String tableName = extractTableName(value);
+                    String entryName = extractEntryName(value);
 
-                    GraphCategory category = graphCategories.containsKey(categoryName) ? graphCategories.get(categoryName) : new GraphCategory(categoryName);
-                    category.addSubColumn(new GraphableColumn(columnName,cell.getColumnIndex()));
-                    graphCategories.put(categoryName,category);
+                    FileLogTableData tableData = loadableTables.containsKey(tableName) ? loadableTables.get(tableName) : new FileLogTableData(tableName);
+                    tableData.addEntry(new FileLogEntryData(entryName,cell.getColumnIndex()));
+                    loadableTables.put(tableName,tableData);
                 }
             }
         }
@@ -67,17 +67,17 @@ public class SheetsReader {
 
     /**
      * Gets the data loaded in the map (The map basically holds all the data from the sheet file)
-     * @param categoryName Value's category/Shuffleboard tab name (e.g. Driver, Shooter, Limelight)
-     * @param columnName Value's name/Shuffleboard entry name (e.g. X position, setpoint, tx,ty)
+     * @param tableName Value's category/Shuffleboard tab name (e.g. Driver, Shooter, Limelight)
+     * @param entryName Value's name/Shuffleboard entry name (e.g. X position, setpoint, tx,ty)
      * @return Data represented in a hashmap: (Timestamp, Value)
      */
-    public HashMap<Double,Double> getDataFromSheet(String categoryName, String columnName) {
-        GraphCategory category = graphCategories.get(categoryName);
+    public HashMap<Double,Number> getDataFromSheet(String tableName, String entryName) {
+        FileLogTableData category = loadableTables.get(tableName);
         if(category == null) return null;
-        GraphableColumn column = category.getColumnByName(columnName);
+        FileLogEntryData column = category.getEntry(entryName);
         if(column == null) return null;
 
-        HashMap<Double,Double> data = new HashMap<>();
+        HashMap<Double,Number> data = new HashMap<>();
 
         // TODO: Optimize point reading from recordingSheet for long files so JavaFx doesn't shit itself apparently
         for(Row row : recordingSheet) {
@@ -100,9 +100,9 @@ public class SheetsReader {
     /**
      * Extracts category/Shuffleboard tab name from the sheet cell value
      * @param sheetValue Value from the sheet cell
-     * @return The name of category/NetworkTable it's of (Driver, Shooter, Limelight)
+     * @return The name of the table it's part of (Driver, Shooter, Limelight)
      */
-    public String extractCategoryName(String sheetValue) {
+    public String extractTableName(String sheetValue) {
         if(sheetValue.contains("Shuffleboard"))
             return sheetValue.split("Shuffleboard")[1].split("/")[1];
         else
@@ -114,14 +114,14 @@ public class SheetsReader {
      * @param tableValue Value from the sheet cell
      * @return The name of the value it represents (X position,setpoint,tx,ty)
      */
-    public String extractColumnName(String tableValue) {
+    public String extractEntryName(String tableValue) {
         if(tableValue.contains("Shuffleboard"))
             return tableValue.split("/")[2];
         else
             return tableValue.split("/")[1];
     }
 
-    public HashMap<String, GraphCategory> getGraphCategories() {
-        return graphCategories;
+    public HashMap<String, FileLogTableData> getLoadableTables() {
+        return loadableTables;
     }
 }
