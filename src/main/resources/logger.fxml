@@ -48,13 +48,13 @@
                                 <items>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="442.0" prefWidth="178.0">
                                        <children>
-                                          <ListView fx:id="categoryList" layoutX="-48.0" layoutY="44.0" prefHeight="398.0" prefWidth="166.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0" />
+                                          <ListView fx:id="tableList" layoutX="-48.0" layoutY="44.0" prefHeight="398.0" prefWidth="166.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="44.0" />
                                           <Label layoutY="14.0" prefHeight="26.0" prefWidth="154.0" text="Categories/Subsystems" />
                                        </children>
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
-                                          <ListView fx:id="valuesList" layoutX="-54.0" layoutY="44.0" prefHeight="345.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="44.0" />
+                                          <ListView fx:id="entryList" layoutX="-54.0" layoutY="44.0" prefHeight="345.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="44.0" />
                                           <Label layoutY="25.0" prefHeight="18.0" prefWidth="139.0" text="Loggable Values" />
                                        </children>
                                     </AnchorPane>
