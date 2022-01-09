@@ -1,7 +1,9 @@
 package me.danielml.logger.networktables;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,15 +24,28 @@ public class NetworkLog {
         this.lastUpdateTime = 0;
     }
 
-    // TODO: Add an object for update contents, and have it be passed back until @NetworkRecording, and update the GUI from there accordingly
-    public void update(Double time, Number newValue) {
+    /**
+     * Updates the log according to the most recent value change/update of the entry.
+     * @param time - Timestamp of the update
+     * @param newValue - The new value it changed to
+     * @param tableName - The NetworkTable its apart of
+     * @param entryName - The entry's name.
+     * @return A list of all the changes for the entry's value
+     */
+    public List<UpdateLog> update(Double time, Number newValue, String tableName, String entryName) {
+        List<UpdateLog> updates = new ArrayList<>();
         if(!newValue.equals(lastValue)) {
             // We do this to reduce unnecessary points being added to the graph, essentially optimizing it.
             values.put(lastUpdateTime, lastValue);
             values.put(time,newValue);
+            updates.add(new UpdateLog(lastUpdateTime,lastValue,tableName,entryName));
+            updates.add(new UpdateLog(time,newValue,tableName,entryName));
+        } else {
+            lastUpdateTime = time;
+            lastValue = newValue;
+            updates.add(new UpdateLog(lastUpdateTime,lastValue,tableName,entryName));
         }
-        lastUpdateTime = time;
-        lastValue = newValue;
+        return updates;
     }
 
     public Map<Double, Number> getValues() {

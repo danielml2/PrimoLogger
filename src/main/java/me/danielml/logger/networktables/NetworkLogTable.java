@@ -17,9 +17,11 @@ public class NetworkLogTable {
 
     private final HashMap<String, NetworkLog> entries;
     private final NetworkTable table;
+    private final String tableName;
 
-    public NetworkLogTable(String tableName) {
-       this.table = NetworkRecording.NT_INSTANCE.getTable(tableName);
+    public NetworkLogTable(String tableName, NetworkTable networkTable) {
+       this.table = networkTable;
+       this.tableName = tableName;
        this.entries = new HashMap<>();
     }
 
@@ -39,15 +41,16 @@ public class NetworkLogTable {
     /**
      * Updates all the entries that are being logged
      * @param time - Time of the update
+     * @return Returns a list of all the changes happened to the entries that are being logged
      */
-    public void update(double time) {
+    public List<UpdateLog> update(double time) {
+        List<UpdateLog> updates = new ArrayList<>();
         for(Map.Entry<String,NetworkLog> entry : entries.entrySet()) {
             NetworkTableEntry networkEntry = table.getEntry(entry.getKey());
-            entry.getValue().update(time,networkEntry.getNumber(0));
+            List<UpdateLog> entryChanges = entry.getValue().update(time,networkEntry.getNumber(0),tableName,entry.getKey());
+            updates.addAll(entryChanges);
         }
+        return updates;
     }
 
-    public List<String> getLoggedEntryNames() {
-        return new ArrayList<>(entries.keySet());
-    }
 }
