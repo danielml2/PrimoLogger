@@ -44,9 +44,11 @@ public class GUIController implements Initializable {
     // i hate having to do this but i am too lazy to think of a proper solution for now
     private double booleanTrueNumeric = 1;
     private double booleanFalseNumeric = -1;
+    private List<String> booleanEntries;
 
     private Recording selectedRecording; // Currently loaded recording
     private List<String> selectedEntries; // Currently shown entries on the graph
+
     private boolean isNetworkLogging = false;
 
     private static GUIController instance;
@@ -64,6 +66,7 @@ public class GUIController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        booleanEntries = new ArrayList<>();
         if(instance == null)
             instance = this;
         mainChart.setTitle("Values over time");
@@ -254,5 +257,9 @@ public class GUIController implements Initializable {
 
     public double getBooleanTrueNumeric() {
         return booleanTrueNumeric;
+    }
+
+    public List<String> getBooleanEntries() {
+        return booleanEntries;
     }
 }

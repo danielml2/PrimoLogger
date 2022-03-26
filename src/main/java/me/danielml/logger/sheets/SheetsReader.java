@@ -5,6 +5,7 @@ import edu.wpi.first.util.datalog.DataLogRecord;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.IntegerLogEntry;
 import me.danielml.logger.javafx.GUIController;
+import me.danielml.logger.recordings.Recording;
 import me.danielml.logger.recordings.filerecording.FileLogTableData;
 import me.danielml.logger.recordings.filerecording.FileLogEntryData;
 import me.danielml.logger.recordings.filerecording.FileRecordingType;
@@ -178,6 +179,7 @@ public class SheetsReader {
                     // i hate this so much
                     double val = cell.getBooleanCellValue() ? GUIController.getInstance().getBooleanTrueNumeric() :  GUIController.getInstance().getBooleanFalseNumeric();
                     data.put(timeStamp, val);
+                    GUIController.getInstance().getBooleanEntries().add(tableName + Recording.TABLE_ENTRY_SEPARATOR + entryName);
                 }
             else
                 data.put(timeStamp,0);

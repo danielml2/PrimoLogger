@@ -36,8 +36,15 @@ public class HoverEventListener implements EventHandler<MouseEvent> {
         finalText.append("Time: " + mouseX + "s \n");
         for (String s : controller.getSelectedEntries()) {
 
+
             Map<Double, Number> data = controller.getLoadedDataByRecording(s);
-            if(data == null) return;
+            if(data == null) continue;
+
+            if(data.getOrDefault(mouseX,-Double.MAX_VALUE).doubleValue() != -Double.MAX_VALUE)
+            {
+                finalText.append(s + ": ").append(data.get(mouseX)).append(" \n");
+                continue;
+            }
 
             Point2D nearestPoint = new Point2D(0, 0);
             Point2D secondNearest = new Point2D(0, 0);
@@ -46,10 +53,20 @@ public class HoverEventListener implements EventHandler<MouseEvent> {
                 double distance = Math.abs(entry.getKey()-mouseX);
                 if (distance < Math.abs(nearestPoint.getX()-mouseX)) {
                     secondNearest = nearestPoint;
-                    nearestPoint = new Point2D(entry.getKey(), (double)entry.getValue());
+                    nearestPoint = new Point2D(entry.getKey(), Double.parseDouble(String.valueOf(entry.getValue())));
                 } else if (distance < Math.abs(secondNearest.getX()-mouseX)) {
-                    secondNearest = new Point2D(entry.getKey(), (double)entry.getValue());
+                    secondNearest = new Point2D(entry.getKey(), Double.parseDouble(String.valueOf(entry.getValue())));
+                    break;
                 }
+            }
+
+            if(controller.getBooleanEntries().contains(s)) {
+                Point2D absoluteNearestPoint = (Math.abs(nearestPoint.getX()-mouseX)) < (Math.abs(secondNearest.getX()-mouseX)) ? nearestPoint : secondNearest;
+
+                boolean value = absoluteNearestPoint.getY() == controller.getBooleanTrueNumeric();
+
+                finalText.append(s + ": ").append(value).append(" \n");
+                continue;
             }
 
             double interpY = MathUtil.linearInterpolation(nearestPoint,secondNearest,mouseX);
