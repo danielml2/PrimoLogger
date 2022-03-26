@@ -26,7 +26,7 @@ public class FXMainApp extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("logger.fxml"));
         Parent root = loader.load();
         controller = loader.getController();
-        Scene scene = new Scene(root,800,700);
+        Scene scene = new Scene(root,1280,720);
 
         primaryStage.getIcons().add(new Image("Icon.png"));
         primaryStage.setTitle("PrimoLogger (EXPERIMENTAL VERSION 0.0.2)");

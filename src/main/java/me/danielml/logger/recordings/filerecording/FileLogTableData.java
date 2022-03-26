@@ -21,6 +21,10 @@ public class FileLogTableData {
         this.entries.add(column);
     }
 
+    public boolean hasEntry(String name) {
+        return entries.contains(name);
+    }
+
     public FileLogEntryData getEntry(String name) {
         return entries.stream().filter(column -> column.getEntryName().equals(name)).findFirst().orElse(null);
     }

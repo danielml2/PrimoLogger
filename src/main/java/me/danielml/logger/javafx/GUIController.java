@@ -2,6 +2,8 @@ package me.danielml.logger.javafx;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -19,6 +21,7 @@ import me.danielml.logger.graph.ChartDataConverter;
 import me.danielml.logger.javafx.events.HoverEventListener;
 import me.danielml.logger.recordings.NetworkRecording;
 import me.danielml.logger.recordings.Recording;
+import me.danielml.logger.recordings.filerecording.FileRecordingType;
 
 
 import java.io.File;
@@ -34,8 +37,13 @@ public class GUIController implements Initializable {
     @FXML private LineChart mainChart;
     @FXML private ListView tableList, entryList;
     @FXML private Label hoverText;
-    @FXML private Button startNetworkLogBtn;
-    @FXML private TextField teamNumberBox;
+    @FXML private TextField trueNumericBox;
+    @FXML private TextField falseNumericBox;
+    @FXML private Button booleanUpdate;
+
+    // i hate having to do this but i am too lazy to think of a proper solution for now
+    private double booleanTrueNumeric = 1;
+    private double booleanFalseNumeric = -1;
 
     private Recording selectedRecording; // Currently loaded recording
     private List<String> selectedEntries; // Currently shown entries on the graph
@@ -70,28 +78,20 @@ public class GUIController implements Initializable {
             FileChooser recordingSelector = new FileChooser();
             recordingSelector.setTitle("Open Recording CSV file");
             recordingSelector.setInitialDirectory(new File(RECORDINGS_PATH));
-            recordingSelector.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV","*.csv"));
+            recordingSelector.getExtensionFilters().add(new FileChooser.ExtensionFilter("WPI Data Logging CSV","*.csv"));
+            recordingSelector.getExtensionFilters().add(new FileChooser.ExtensionFilter("Shuffleboard CSV","*.csv"));
+
             File file = recordingSelector.showOpenDialog(new Stage());
             if(file == null) return;
-            loadRecording(new FileRecording(new File(file.getPath())));
+            if(recordingSelector.getSelectedExtensionFilter().getDescription().contains("WPI Data Logging CSV"))
+                loadRecording(new FileRecording(new File(file.getPath()), FileRecordingType.WPI_CSV));
+            else
+                loadRecording(new FileRecording(new File(file.getPath())));
         });
 
         Node node = mainChart.lookup(".chart-plot-background");
         mainChart.setOnMouseMoved(new HoverEventListener(this,hoverText));
         node.setOnMouseMoved(new HoverEventListener(this,hoverText));
-        startNetworkLogBtn.setOnAction((value) -> {
-            if(teamNumberBox.getText().isEmpty() || teamNumberBox.getText().length() < 3)
-                return;
-            if(!isNetworkLogging) {
-                isNetworkLogging = true;
-                loadRecording(new NetworkRecording(teamNumberBox.getText(),this));
-                startNetworkLogBtn.setText("Stop Network Logging");
-            } else {
-//                clearRecording();
-                isNetworkLogging = false;
-                startNetworkLogBtn.setText("Start Network Logging");
-            }
-        });
 
         tableList.setOnMouseClicked(event -> {
             if(event.getButton() == MouseButton.PRIMARY) {
@@ -103,6 +103,18 @@ public class GUIController implements Initializable {
                 entryList.refresh();
             }
         });
+
+        booleanUpdate.setOnAction(event -> {
+
+            if(trueNumericBox.getText().isEmpty() && falseNumericBox.getText().isEmpty())
+                return;
+            try {
+                booleanTrueNumeric = Integer.parseInt(trueNumericBox.getText());
+                booleanFalseNumeric = Integer.parseInt(falseNumericBox.getText());
+            } catch (NumberFormatException ignored) {}
+        });
+
+
     }
 
     /**
@@ -137,11 +149,12 @@ public class GUIController implements Initializable {
      * @param entryName The entry's name (e.g. X position,setpoint,ty,tx);
      */
     public void addDataToChart(String tableName, String entryName) {
-        if(selectedEntries.contains(tableName+"_"+entryName))
+        if(selectedEntries.contains(tableName + Recording.TABLE_ENTRY_SEPARATOR + entryName))
             return;
         ChartDataConverter chartConverter = new ChartDataConverter();
         Map<Double, Number> data = selectedRecording.getData(tableName,entryName);
-        selectedEntries.add(tableName+"_"+entryName);
+
+        selectedEntries.add(tableName + Recording.TABLE_ENTRY_SEPARATOR + entryName);
 
         mainChart.getData().add(chartConverter.convert(data,tableName + " " + entryName));
     }
@@ -200,7 +213,7 @@ public class GUIController implements Initializable {
      * @param entryName The entry's name (e.g. X position,setpoint,ty,tx);
      */
     public void removeDataFromChart(String tableName, String entryName) {
-        selectedEntries.remove(tableName+"_"+entryName);
+        selectedEntries.remove(tableName+ Recording.TABLE_ENTRY_SEPARATOR + entryName);
         mainChart.getData().removeIf((Predicate<XYChart.Series>) series -> series.getName().equals(tableName + " " + entryName));
     }
 
@@ -211,7 +224,7 @@ public class GUIController implements Initializable {
      * @return If the value is selected or not
      */
     public boolean isSelected(String tableName, String entryName) {
-        return selectedEntries.contains(tableName+"_"+entryName);
+        return selectedEntries.contains(tableName+ Recording.TABLE_ENTRY_SEPARATOR + entryName);
     }
 
     public LineChart getMainChart() {
@@ -228,10 +241,18 @@ public class GUIController implements Initializable {
      * @return Map containing the data loaded from the recording, (timestamp,value)
      */
     public Map<Double, Number> getLoadedDataByRecording(String mapName) {
-        return selectedRecording.getData(mapName.split("_")[0],mapName.split("_")[1]);
+        return selectedRecording.getData(mapName.split(Recording.TABLE_ENTRY_SEPARATOR)[0],mapName.split(Recording.TABLE_ENTRY_SEPARATOR)[1]);
     }
 
     public boolean isNetworkLogging() {
         return isNetworkLogging;
+    }
+
+    public double getBooleanFalseNumeric() {
+        return booleanFalseNumeric;
+    }
+
+    public double getBooleanTrueNumeric() {
+        return booleanTrueNumeric;
     }
 }

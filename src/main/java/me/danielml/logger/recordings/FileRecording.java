@@ -1,5 +1,6 @@
 package me.danielml.logger.recordings;
 
+import me.danielml.logger.recordings.filerecording.FileRecordingType;
 import me.danielml.logger.sheets.CSVConverter;
 import me.danielml.logger.sheets.SheetsReader;
 
@@ -13,6 +14,7 @@ public class FileRecording implements Recording{
 
     private SheetsReader reader;
     private HashMap<String,Map<Double,Number>> loadedData;
+
     private String fileName;
 
     /**
@@ -20,11 +22,14 @@ public class FileRecording implements Recording{
      * @param file - Shuffleboard CSV export file
      */
     public FileRecording(File file) {
+        this(file,FileRecordingType.fromFile(file.getName()));
+    }
+
+    public FileRecording(File file, FileRecordingType type) {
         loadedData = new HashMap<>();
         this.fileName = file.getName();
         try {
-            CSVConverter.convertTOXLSX(file);
-            reader = new SheetsReader(file.getName().substring(0,file.getName().length()-4));
+            reader = new SheetsReader(file, type);
             System.out.println("Loaded file");
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,7 +45,7 @@ public class FileRecording implements Recording{
     public Map<Double, Number> loadData(String category, String column) {
         Map<Double,Number> map = reader.getDataFromSheet(category, column);
         if(map == null) System.out.println("Invalid category or column: " + category + " " + column);
-        loadedData.put(category+"_"+column,map);
+        loadedData.put(category+ Recording.TABLE_ENTRY_SEPARATOR +column,map);
         return map;
     }
 
@@ -65,11 +70,11 @@ public class FileRecording implements Recording{
 
 
     public Map<Double,Number> getLoadedDataBy(String category, String column) {
-        return loadedData.get(category+"_"+column);
+        return loadedData.get(category+ Recording.TABLE_ENTRY_SEPARATOR +column);
     }
 
     private boolean isLoaded(String category, String entry) {
-        return loadedData.containsKey(category+"_"+entry);
+        return loadedData.containsKey(category+ Recording.TABLE_ENTRY_SEPARATOR +entry);
     }
 
     public String getFileName() {

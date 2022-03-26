@@ -32,4 +32,6 @@ public interface Recording {
      */
     List<String> getLoadedTableNames();
 
+    String TABLE_ENTRY_SEPARATOR = ";";
+
 }
