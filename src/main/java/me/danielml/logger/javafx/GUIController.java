@@ -41,6 +41,13 @@ public class GUIController implements Initializable {
     private List<String> selectedEntries; // Currently shown entries on the graph
     private boolean isNetworkLogging = false;
 
+    private static GUIController instance;
+    private Stage stage;
+
+    public static GUIController getInstance() {
+        return instance;
+    }
+
     // File directory for shuffleboard recordings
     private static final String RECORDINGS_PATH = System.getProperty("user.home") + File.separator + "Shuffleboard" + File.separator + "recordings";
 
@@ -49,6 +56,8 @@ public class GUIController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        if(instance == null)
+            instance = this;
         mainChart.setTitle("Values over time");
         NumberAxis xAxis = (NumberAxis)mainChart.getXAxis();
         xAxis.setLabel("Time (in seconds)");
@@ -74,12 +83,12 @@ public class GUIController implements Initializable {
             if(teamNumberBox.getText().isEmpty() || teamNumberBox.getText().length() < 3)
                 return;
             if(!isNetworkLogging) {
-                loadRecording(new NetworkRecording(Integer.parseInt(teamNumberBox.getText()),this));
+                isNetworkLogging = true;
+                loadRecording(new NetworkRecording(teamNumberBox.getText(),this));
                 startNetworkLogBtn.setText("Stop Network Logging");
-
-
             } else {
 //                clearRecording();
+                isNetworkLogging = false;
                 startNetworkLogBtn.setText("Start Network Logging");
             }
         });
@@ -143,8 +152,10 @@ public class GUIController implements Initializable {
      * @param updates New changes that happened to the entry values.
      */
     public void updateChartData(List<UpdateLog> updates) {
+        System.out.println("Attempting to update chart data...");
         if(selectedEntries != null)
         for(String entryMapName : selectedEntries) {
+            System.out.println("Updating chart for " + entryMapName);
             XYChart.Series<Double,Number> chartSeries = getChartSeries(entryMapName.replace("_"," "));
             if(chartSeries == null)
                 continue;
@@ -162,7 +173,7 @@ public class GUIController implements Initializable {
                     chartSeries.getData().add(new XYChart.Data<>(log.getTimestamp(), log.getValue()));
                 }
             }
-
+            System.out.println("Finished updating for " + entryMapName);
             mainChart.autosize();
         }
 

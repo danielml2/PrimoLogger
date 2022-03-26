@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import me.danielml.logger.javafx.GUIController;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 public class FXMainApp extends Application {
 
     private GUIController controller;
-
+    private Stage stage;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -27,8 +28,11 @@ public class FXMainApp extends Application {
         controller = loader.getController();
         Scene scene = new Scene(root,800,700);
 
+        primaryStage.getIcons().add(new Image("Icon.png"));
+        primaryStage.setTitle("PrimoLogger (EXPERIMENTAL VERSION 0.0.2)");
         primaryStage.setScene(scene);
         primaryStage.show();
+        this.stage = primaryStage;
     }
 
 
@@ -40,4 +44,7 @@ public class FXMainApp extends Application {
         return controller.getMainChart();
     }
 
+    public void setTitle(String title) {
+        stage.setTitle(title);
+    }
 }

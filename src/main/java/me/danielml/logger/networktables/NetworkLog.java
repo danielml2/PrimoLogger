@@ -34,17 +34,18 @@ public class NetworkLog {
      */
     public List<UpdateLog> update(Double time, Number newValue, String tableName, String entryName) {
         List<UpdateLog> updates = new ArrayList<>();
-        if(!newValue.equals(lastValue)) {
-            // We do this to reduce unnecessary points being added to the graph, essentially optimizing it.
-            values.put(lastUpdateTime, lastValue);
-            values.put(time,newValue);
-            updates.add(new UpdateLog(lastUpdateTime,lastValue,tableName,entryName));
-            updates.add(new UpdateLog(time,newValue,tableName,entryName));
-        } else {
-            lastUpdateTime = time;
-            lastValue = newValue;
-            updates.add(new UpdateLog(lastUpdateTime,lastValue,tableName,entryName));
-        }
+//        if(!newValue.equals(lastValue)) {
+//            // We do this to reduce unnecessary points being added to the graph, essentially optimizing it.
+//            values.put(lastUpdateTime, lastValue);
+//            values.put(time,newValue);
+//            updates.add(new UpdateLog(lastUpdateTime,lastValue,tableName,entryName));
+//            updates.add(new UpdateLog(time,newValue,tableName,entryName));
+//        } else {
+//            lastUpdateTime = time;
+//            lastValue = newValue;
+//            updates.add(new UpdateLog(lastUpdateTime,lastValue,tableName,entryName));
+//        }
+        updates.add(new UpdateLog(time,newValue,tableName,entryName));
         return updates;
     }
 

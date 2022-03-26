@@ -1,5 +1,6 @@
 package me.danielml.logger.recordings;
 
+import edu.wpi.first.networktables.ConnectionNotification;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import javafx.application.Platform;
@@ -8,6 +9,7 @@ import me.danielml.logger.networktables.NetworkLogTable;
 import me.danielml.logger.networktables.UpdateLog;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Represents a recording that's taken from network tables that are being run on the DS Computer, similar to logging entries with Glass.
@@ -28,54 +30,61 @@ public class NetworkRecording implements Recording {
     private int tableCount = 0;
 
 
-    public NetworkRecording(int teamNumber, GUIController controller) {
+    public NetworkRecording(String ip, GUIController controller) {
         this.loggedTables = new HashMap<>();
         this.timer = new Timer();
         this.startTime = System.currentTimeMillis();
-        this.init(teamNumber);
+        this.init(ip);
         this.controller = controller;
     }
 
     /**
      * Initializes the connection to the NetworkTables
-     * @param teamNumber - Robot's team number to connect to.
+     * @param ip - Robot's IP to connect to.
      */
-    private void init(int teamNumber) {
-        NT_INSTANCE.startClientTeam(teamNumber);
-        NT_INSTANCE.startDSClient();
+    private void init(String ip) {
+            NT_INSTANCE.startClient(ip);
+            NT_INSTANCE.addConnectionListener(connectionNotification -> {
+                System.out.println("Connected yay");
+                timer.scheduleAtFixedRate((new TimerTask() {
+                    @Override
+                    public void run() {
+                        System.out.println("test");
+                        if (controller == null || !controller.isNetworkLogging()) {
+                            System.out.println("cancel");
+                            cancel();
+                            return;
+                        }
+                        update();
 
-        timer.scheduleAtFixedRate((new TimerTask() {
-            @Override
-            public void run() {
-                if(!controller.isNetworkLogging())
-                {
-                    cancel();
-                    return;
-                }
-                update();
-            }
-        }),0,20);
-        tableCount = getLoadedTableNames().size();
-    }
+                        System.out.println("Attempting to update...");
+                    }
+                }), 0, 20);
+            }, true);
+
+        }
+
 
     /**
      * Updates the log values
      */
     public void update() {
         double time = (System.currentTimeMillis() - startTime) / 1000; // Time in seconds
-
         List<UpdateLog> updates = new ArrayList<>();
         for(NetworkLogTable table : loggedTables.values()) {
             // See #NetworkLogTable.update()
             List<UpdateLog> logs = table.update(time);
             updates.addAll(logs);
         }
+        System.out.println("(" + time + ") UPDATE: " + updates.size() + " updates.");
         Platform.runLater(() -> {
             int newTableCount = getLoadedTableNames().size();
             if(tableCount != newTableCount) {
+                System.out.println("Updating tables");
                 tableCount = newTableCount;
                 controller.updateGUIViews();
             }
+//            controller.updateGUIViews();
             controller.updateChartData(updates);
         });
     }

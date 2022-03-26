@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/danielml/logger/networktables/UpdateLog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/fileHashes.bin" afterDir="false" />
@@ -15,14 +13,14 @@
       <change beforePath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.3.3/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/recording-19.00.49.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/data/recording-19.00.49.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/danielml/logger/FXMainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/danielml/logger/FXMainApp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/danielml/logger/javafx/GUIController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/danielml/logger/javafx/GUIController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/danielml/logger/networktables/NetworkLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/danielml/logger/networktables/NetworkLog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/danielml/logger/networktables/NetworkLogTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/danielml/logger/networktables/NetworkLogTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/danielml/logger/recordings/FileRecording.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/danielml/logger/recordings/FileRecording.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/danielml/logger/recordings/NetworkRecording.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/danielml/logger/recordings/NetworkRecording.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/logger.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logger.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -233,7 +231,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="dynamic.classpath" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/me/danielml/logger" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -241,6 +239,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Daniel\eclipse-workspace\PrimoLogger\src\main\resources" />
       <recent name="C:\Users\Daniel\eclipse-workspace\PrimoLogger\src\main\java\me\danielml\logger" />
     </key>
   </component>
@@ -254,6 +253,7 @@
       <command value="gradle clean compileJava jar" />
       <command value="gradle clean build jar" />
       <command value="gradle build jar" />
+      <command value="gradle build shadowJar" />
     </option>
   </component>
   <component name="RunManager" selected="Application.Main (1)">
@@ -374,7 +374,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PrimoLogger [build jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="PrimoLogger [build shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -386,7 +386,7 @@
         <option name="taskNames">
           <list>
             <option value="build" />
-            <option value="jar" />
+            <option value="shadowJar" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -492,11 +492,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.PrimoLogger [build shadowJar]" />
         <item itemvalue="Application.Main (1)" />
         <item itemvalue="Gradle.PrimoLogger [shadowJar]" />
         <item itemvalue="Gradle.PrimoLogger [knows]" />
         <item itemvalue="Gradle.PrimoLogger [jar]" />
-        <item itemvalue="Gradle.PrimoLogger [build jar]" />
       </list>
     </recent_temporary>
   </component>

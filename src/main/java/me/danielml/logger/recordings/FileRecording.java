@@ -13,6 +13,7 @@ public class FileRecording implements Recording{
 
     private SheetsReader reader;
     private HashMap<String,Map<Double,Number>> loadedData;
+    private String fileName;
 
     /**
      * Constructs a recording from a Shuffleboard CSV Export file.
@@ -20,6 +21,7 @@ public class FileRecording implements Recording{
      */
     public FileRecording(File file) {
         loadedData = new HashMap<>();
+        this.fileName = file.getName();
         try {
             CSVConverter.convertTOXLSX(file);
             reader = new SheetsReader(file.getName().substring(0,file.getName().length()-4));
@@ -70,5 +72,7 @@ public class FileRecording implements Recording{
         return loadedData.containsKey(category+"_"+entry);
     }
 
-
+    public String getFileName() {
+        return fileName;
+    }
 }
