@@ -40,6 +40,7 @@ public class GUIController implements Initializable {
     @FXML private TextField trueNumericBox;
     @FXML private TextField falseNumericBox;
     @FXML private Button booleanUpdate;
+    @FXML private Button loadFile; // alternate file uploading button
 
     // i hate having to do this but i am too lazy to think of a proper solution for now
     private double booleanTrueNumeric = 1;
@@ -59,7 +60,7 @@ public class GUIController implements Initializable {
     }
 
     // File directory for shuffleboard recordings
-    private static final String RECORDINGS_PATH = System.getProperty("user.home") + File.separator + "Shuffleboard" + File.separator + "recordings";
+    private static final String RECORDINGS_PATH = System.getProperty("user.home");
 
     /**
      * JavaFX Controller's Init, gets called before the screen is shown
@@ -77,7 +78,8 @@ public class GUIController implements Initializable {
         NumberAxis yAxis = (NumberAxis)mainChart.getYAxis();
         yAxis.setAutoRanging(true);
 
-        fileChooser.setOnAction(event -> {
+
+        EventHandler<ActionEvent> fileLoader = event -> {
             FileChooser recordingSelector = new FileChooser();
             recordingSelector.setTitle("Open Recording CSV file");
             recordingSelector.setInitialDirectory(new File(RECORDINGS_PATH));
@@ -90,11 +92,13 @@ public class GUIController implements Initializable {
                 loadRecording(new FileRecording(new File(file.getPath()), FileRecordingType.WPI_CSV));
             else
                 loadRecording(new FileRecording(new File(file.getPath())));
-        });
+        };
 
-        Node node = mainChart.lookup(".chart-plot-background");
+       fileChooser.setOnAction(fileLoader);
+       loadFile.setOnAction(fileLoader);
+
         mainChart.setOnMouseMoved(new HoverEventListener(this,hoverText));
-        node.setOnMouseMoved(new HoverEventListener(this,hoverText));
+//        node.setOnMouseMoved(new HoverEventListener(this,hoverText));
 
         tableList.setOnMouseClicked(event -> {
             if(event.getButton() == MouseButton.PRIMARY) {

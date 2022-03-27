@@ -29,7 +29,7 @@ public class FXMainApp extends Application {
         Scene scene = new Scene(root,1280,720);
 
         primaryStage.getIcons().add(new Image("Icon.png"));
-        primaryStage.setTitle("PrimoLogger (EXPERIMENTAL VERSION 0.0.2)");
+        primaryStage.setTitle("PrimoLogger (EXPERIMENTAL VERSION WPI-DATA-LOG 0.0.2)");
         primaryStage.setScene(scene);
         primaryStage.show();
         this.stage = primaryStage;
